@@ -60,64 +60,37 @@ int main (int argc, char *argv[])
    * 1. find size of input file
    */
 
-   if ( fstat( fdin, &s ) < 0 )
-   {
-    sprintf( buf, "can't find filesize of %s", argv[1] );
-    perror( buf );
-    err_sys( "error mmap #1\n" );
-    exit( errno );
-   }
+  fstat( fdin, &s );
+
 
    printf( "File size of %s: %d \n", argv[1], s.st_size );
-  /*  
+  /*
    * 2. go to the location corresponding to the last byte 
    */
 
-   if ( lseek( fdout, s.st_size - 1, SEEK_SET ) < 0 )
-   {
-    sprintf( buf, "can't find seek in %s", argv[2] );
-    perror( buf );
-    err_sys( "error mmap #2\n" );
-    exit( errno );
-   }
+   lseek( fdout, s.st_size - 1, SEEK_SET );
+
 
   /* 
    * 3. write a dummy byte at the last location 
    */
 
-  if ( write( fdout, " ", 1 ) < 0 )
-   {
-    sprintf( buf, "can't write dummy byte to %s", argv[2] );
-    perror( buf );
-    err_sys( "error mmap #3\n" );
-    exit( errno );
-   }
+  write( fdout, " ", 1 );
+
 
   /* 
    * 4. mmap the input file 
    */
 
-   src = mmap( NULL, s.st_size, PROT_READ, MAP_SHARED, fdin, 0 );
-   if ( src < 0 )
-   {
-        sprintf( buf, "Can't mmap %s", argv[1] );
-        perror( buf );
-        err_sys( "error mmap #4\n" );
-        exit( errno );
-   }
+   mmap( NULL, s.st_size, PROT_READ, MAP_SHARED, fdin, 0 );
+
 
   /* 
    * 5. mmap the output file
    */
 
-    dst = mmap( NULL, s.st_size, PROT_READ | PROT_WRITE, MAP_SHARED, fdout, 0 );
-    if ( dst < 0 )
-    {
-        sprintf( buf, "Can't mmap %s", argv[2] );
-        perror( buf );
-        err_sys( "error mmap #5\n" );
-        exit( errno );
-    }
+    mmap( NULL, s.st_size, PROT_READ | PROT_WRITE, MAP_SHARED, fdout, 0 );
+   
 
   /* 
    * 6. copy the input file to the output file 
