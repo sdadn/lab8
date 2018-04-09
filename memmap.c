@@ -78,19 +78,19 @@ int main (int argc, char *argv[])
   write( fdout, " ", 1 );
 
 
-  /* 
+  /*
    * 4. mmap the input file 
    */
 
    mmap( NULL, s.st_size, PROT_READ, MAP_SHARED, fdin, 0 );
 
 
-  /* 
+  /*
    * 5. mmap the output file
    */
 
     mmap( NULL, s.st_size, PROT_READ | PROT_WRITE, MAP_SHARED, fdout, 0 );
-   
+
 
   /* 
    * 6. copy the input file to the output file 
