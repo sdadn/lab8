@@ -63,7 +63,7 @@ int main (int argc, char *argv[])
   fstat( fdin, &s );
 
 
-   printf( "File size of %s: %d \n", argv[1], s.st_size );
+
   /*
    * 2. go to the location corresponding to the last byte 
    */
@@ -92,7 +92,7 @@ int main (int argc, char *argv[])
     mmap( NULL, s.st_size, PROT_READ | PROT_WRITE, MAP_SHARED, fdout, 0 );
 
 
-  /* 
+  /*
    * 6. copy the input file to the output file 
    */
 
